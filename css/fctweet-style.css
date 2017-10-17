@@ -1,0 +1,12 @@
+
+.fc-tweet-plugin > a{
+    padding: 9px 15px 4px 0;
+    float: left;
+}
+
+.fc-tweet-plugin > h2{
+    padding-left: 100px;
+}
+p{
+    margin: 0;
+}
