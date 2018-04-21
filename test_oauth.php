@@ -1,15 +1,32 @@
 <?php
-/*
-  Plugin Name: FC 3 Column Tweet Display.
-  Plugin URI: http://flyingcursor.com/
-  Description: Displays Tweets in 1-3 Column Format.
-  Version: 1.0.0
-  Author: Flying Cursor
-  Author URI: http://flyingcursor.com/
-  License: GPL2
+    
+/**
+ * The plugin main file
+ *
+ * This file is read by WordPress to generate the plugin information in the
+ * plugin admin area. This file also includes all of the dependencies used by
+ * the plugin, registers the activation and deactivation functions, and defines
+ * a function that starts the plugin.
+ *
+ * @since             0.0.1
+ * @package           fc_tweet
+ *
+ * @wordpress-plugin
+ * 
+ * Plugin Name: FC 3 Column Tweet Display
+ * Description: Display Tweets in 1-3 Column Format.
+ * Plugin URI: https://github.com/ajmaurya99/Fetch-Tweets-WordPress-Plugin
+ * Version: 1.0.0
+ * Author: Ajay Maurya
+ * Author URI:  https://github.com/ajmaurya99
+ * Text Domain: fc_tweet
+ * License: GPL2
  */
+  
 
-
+  /**
+   * Initialize in the Admin Menu
+   */
 $fc_tweets = array();
 add_action('admin_menu', 'fc_tweet');
 
@@ -17,7 +34,7 @@ function fc_tweet() {
 
     /* create new top-level menu */
     add_menu_page('FC 3 Column Tweet Display', 'FC 3 Column Tweet Display', 'administrator', 'fctweets', 'fc_tweet_setting', get_stylesheet_directory_uri('stylesheet_directory') . "/images/fc-logo.png");
-    add_submenu_page('fctweets', 'FC Tweets Settings', 'Settings', 'administrator', 'fc_settings', 'fc_tweet_setting');
+    add_submenu_page('fctweets', 'FC Tweet Settings', 'Settings', 'administrator', 'fc_settings', 'fc_tweet_setting');
 
     /* call register settings function */
     add_action('admin_init', 'register_fc_tweet_setting');
@@ -42,9 +59,11 @@ function fc_tweet_style() {
 add_action('admin_enqueue_scripts', 'fc_tweet_style');
 
 function register_fc_tweet_setting() {
+  
     /* register our settings */
     register_setting('fc_tweet_settings_group', 'fctweet_key');
 }
+
 
 /* Create Db for Plugin */
 
@@ -66,14 +85,14 @@ function pu_create_plugin_tables() {
     dbDelta($sql);
 }
 
-/* /.Create Db for Plugin */
+/* Plugins setting page */
 
 function fc_tweet_setting() {
     global $fc_tweets;
     ?>  
     <div class="wrap">
         <div class="fc-tweet-plugin">
-            <a href="http://flyingcursor.com/" target="_blank"><?php echo '<img src="' . plugins_url('/fc-3column-tweet-display/images/fc-logo.png', dirname(__FILE__)) . '" > '; ?></a>
+            <a href="http://ajmaurya.com/" target="_blank"><?php echo '<img src="' . plugins_url('/fc-3column-tweet-display/images/fc-logo.png', dirname(__FILE__)) . '" > '; ?></a>
             <h2>FC 3Column Tweet Display</h2>
         </div>
         <div class="form">
@@ -202,7 +221,7 @@ function get_tweets() {
 
 add_action('init', 'display_tweets');
 
-/* /.140 Dev Plugin to get the Twitter feeds */
+
 
 /* Convert TimeStamp in Hours ago */
 
@@ -249,7 +268,7 @@ function twitter_time($a) {
     }
 }
 
-/* /.Convert TimeStamp in Hours ago */
+
 
 /**
  * Replace links in text with html links
@@ -258,7 +277,7 @@ function twitter_time($a) {
  * @return string
  */
 function auto_link_text($text) {
-    $pattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+    $pattern = '#b(([w-]+://?|www[.])[^s()<>]+(?:([wd]+)|([^[:punct:]s]|/)))#';
     $callback = create_function('$matches', '
        $url = array_shift($matches);
        $url_parts = parse_url($url);
@@ -266,7 +285,7 @@ function auto_link_text($text) {
        $text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
        $text = preg_replace("/^www./", "", $text);
 
-       return sprintf(\'<a target="_blank" href="%s">%s</a>\', $url, $text);
+       return sprintf('<a target="_blank" href="%s">%s</a>', $url, $text);
    ');
 
     return preg_replace_callback($pattern, $callback, $text);
@@ -277,19 +296,20 @@ function auto_link_text($text) {
 function auto_link_hashtag($text) {
 
     $pattern = '/#([a-zA-Z_,"$#@.|])+/';
-    $callback = create_function('$matches', '
+    $callback = create_function('$matches',
        $url = array_shift($matches);
        $url_parts = parse_url($url);
        $url = preg_replace("/^#/", "", $url);
        $text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
         
-       return sprintf(\'<a target="_blank" href="https://twitter.com/hashtag/%s/?src=hash">#%s</a>\', $url, $text);
-   ');
+       return sprintf('<a target="_blank" href="https://twitter.com/hashtag/%s/?src=hash">#%s</a>', $url, $text);
+   );
 
     return preg_replace_callback($pattern, $callback, $text);
 }
 
-/* /.Replace Hashtag with Link */
+
+
 
 /* Replace Username  with Link */
 
@@ -301,15 +321,14 @@ function auto_link_username($text) {
        $url = preg_replace("/^@/", "", $url);
        $text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
         
-       return sprintf(\'<a target="_blank" href="https://twitter.com/%s">@%s</a>\', $url, $text);
+       return sprintf('<a target="_blank" href="https://twitter.com/%s">@%s</a>', $url, $text);
    ');
 
     return preg_replace_callback($pattern, $callback, $text);
 }
 
-/* /.Replace Username  with Link */
 
-/* Display Tweet Function */
+/* Function to display tweet in the front-end */
 
 function display_tweets($c) {
     $fc_tweets_user_values = get_option('fctweet_key');
@@ -336,9 +355,9 @@ function display_tweets($c) {
     }
 }
 
-/* /.Display Tweet Function */
 
-/* Display Coulmn and Row Logic  Function */
+
+/* Display Column and Row Logic  Function */
 
 function display_tweets_row() {
     $fc_tweets_user_values = get_option('fctweet_key');
@@ -409,12 +428,12 @@ function display_tweets_row() {
     }
 }
 
-/* /.Display Coulmn and Row Logic  Function */
 
-/* Cron Job */
+/* Cron Job 
+* Get New Tweets every hour.
+*/
 if (!wp_next_scheduled('get_tweets_hook')) {
     wp_schedule_event(time(), 'hourly', 'get_tweets_hook');
 }
 add_action('get_tweets_hook', 'get_tweets');
 ?>
-
