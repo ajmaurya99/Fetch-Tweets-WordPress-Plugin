@@ -31,6 +31,23 @@ The plugin uses jquery cycle2 plugin as a slider to display the tweets in the fo
 * [jQuery Cycle2] (http://jquery.malsup.com/cycle2/) jQuery Cycle 2 Plugin for looping of the tweets.
 * [Bootstrap 3] (http://getbootstrap.com/docs/3.3/) Bootstrap 3 for making the grid layout
 
+## File structure
+
+* [test_oauth.php] (https://github.com/ajmaurya99/Fetch-Tweets-WordPress-Plugin/blob/master/test_oauth.php) This file is read by WordPress to generate the plugin information in the plugin admin area. This file also includes all of the dependencies used by the plugin, registers the activation and deactivation functions, and defines a function that starts the plugin.
+
+* [config.php] (https://github.com/ajmaurya99/Fetch-Tweets-WordPress-Plugin/blob/master/config.php) Config file contains all the database configuration and the twitter key and tokens.
+
+* [db_lib.php] (https://github.com/ajmaurya99/Fetch-Tweets-WordPress-Plugin/blob/master/db_lib.php) Performs all the database operations. 
+
+## Getting Twitter Kers and Tokens
+
+* Visit  Twitter Application Management (https://apps.twitter.com/)
+* Click on Create New App
+* Fill all the deails of the application
+* After creating the application, Visit "Keys and Access Tokens tab".
+* Copy Consumer Key (API Key), Consumer Secret (API Secret), Access Token,Access Token Secret.
+* Paste all the keys into your Plugins settings page.
+
 ## Changelog
 
 1.0.0
